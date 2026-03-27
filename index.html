@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paige Frank — PaigeDecoded</title>
+  <meta name="description" content="Paige Frank — 2x Amazon SDE Intern, CGI Intern, Stamps Scholar, Builder of rootEd. Intelligence is everywhere. Opportunity isn't. Yet." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:#0C0C0C; --offwhite:#F7F4F0; --white:#FFFFFF;
+      --pink:#E8647A; --pink-soft:#F2A0AE;
+      --pink-dim:rgba(232,100,122,0.1); --pink-border:rgba(232,100,122,0.25);
+      --gray:#888; --border:rgba(0,0,0,0.08);
+      --font-display:'Syne',sans-serif;
+      --font-serif:'Cormorant Garamond',serif;
+      --font-mono:'DM Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-display);background:var(--offwhite);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--pink);color:white;}
+    .cursor{width:10px;height:10px;background:var(--pink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.15s ease,width 0.2s,height 0.2s;mix-blend-mode:multiply;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(247,244,240,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-display);font-size:15px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--black);text-decoration:none;}
+    .nav-logo span{color:var(--pink);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--black);}
+
+    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;overflow:hidden;}
+    .hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 48px 80px 80px;}
+    .hero-tag{font-family:var(--font-mono);font-size:11px;color:var(--pink);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+    .hero-tag::before{content:'';width:32px;height:1px;background:var(--pink);}
+    .hero-name{font-family:var(--font-serif);font-size:clamp(56px,7vw,88px);font-weight:300;line-height:0.95;color:var(--black);margin-bottom:8px;}
+    .hero-name em{font-style:italic;color:var(--pink);}
+    .hero-decoded{font-family:var(--font-display);font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-1px;color:var(--black);margin-bottom:32px;}
+    .hero-decoded span{color:var(--pink);}
+    .hero-manifesto{font-family:var(--font-serif);font-size:20px;font-weight:300;font-style:italic;line-height:1.65;color:rgba(12,12,12,0.6);max-width:480px;margin-bottom:40px;border-left:2px solid var(--pink);padding-left:20px;}
+    .hero-stats{display:flex;gap:32px;margin-bottom:40px;}
+    .hero-stat-num{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--black);display:block;}
+    .hero-stat-label{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--gray);display:block;margin-top:2px;}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+    .btn-primary{padding:14px 32px;background:var(--black);color:var(--offwhite);font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;text-decoration:none;transition:all 0.2s;display:inline-block;}
+    .btn-primary:hover{background:var(--pink);}
+    .btn-secondary{padding:14px 32px;background:transparent;color:var(--black);font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid var(--black);border-radius:2px;cursor:pointer;text-decoration:none;transition:all 0.2s;display:inline-block;}
+    .btn-secondary:hover{background:var(--black);color:var(--offwhite);}
+    .hero-right{position:relative;overflow:hidden;}
+    .hero-img-wrap{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;}
+    .hero-img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(15%);}
+    .hero-img-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--offwhite) 0%,transparent 20%),linear-gradient(to top,var(--offwhite) 0%,transparent 25%);}
+    .hero-badge{position:absolute;bottom:48px;left:-20px;background:var(--black);color:var(--offwhite);padding:16px 24px;border-left:3px solid var(--pink);}
+    .hero-badge-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:4px;}
+    .hero-badge-text{font-family:var(--font-serif);font-size:18px;font-weight:300;font-style:italic;}
+
+    .ticker{background:var(--black);padding:14px 0;overflow:hidden;white-space:nowrap;}
+    .ticker-track{display:inline-flex;gap:0;animation:ticker 45s linear infinite;}
+    .ticker-item{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--offwhite);padding:0 32px;display:inline-flex;align-items:center;gap:16px;}
+    .ticker-item::after{content:'◆';color:var(--pink);font-size:8px;}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    section{padding:100px 80px;}
+    .section-tag{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--pink);display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .section-tag::before{content:'';width:32px;height:1px;background:var(--pink);}
+    .section-title{font-family:var(--font-serif);font-size:clamp(40px,5vw,64px);font-weight:300;line-height:1.05;margin-bottom:16px;}
+    .section-title em{font-style:italic;color:var(--pink);}
+
+    /* STORY */
+    .story{background:var(--white);}
+    .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px;}
+    .story-text p{font-family:var(--font-serif);font-size:19px;font-weight:300;line-height:1.8;color:rgba(12,12,12,0.75);margin-bottom:20px;}
+    .story-text p strong{font-weight:600;color:var(--black);}
+    .story-text p em{font-style:italic;color:var(--pink);}
+    .milestone{display:flex;gap:24px;padding:18px 0;border-bottom:1px solid var(--border);}
+    .milestone:first-child{padding-top:0;}
+    .milestone:last-child{border-bottom:none;}
+    .milestone-year{font-family:var(--font-mono);font-size:11px;color:var(--pink);flex-shrink:0;width:40px;padding-top:4px;}
+    .milestone-title{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--black);margin-bottom:3px;}
+    .milestone-desc{font-family:var(--font-serif);font-size:13px;font-weight:300;color:var(--gray);line-height:1.5;}
+
+    /* EXPERIENCE */
+    .experience{background:var(--offwhite);}
+    .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:60px;}
+    .exp-card{background:var(--white);border:1px solid var(--border);padding:30px;position:relative;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;}
+    .exp-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.07);}
+    .exp-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--pink);}
+    .exp-card.featured{background:var(--black);grid-column:span 2;}
+    .exp-badge{display:inline-flex;background:rgba(232,100,122,0.1);border:1px solid var(--pink-border);border-radius:2px;padding:3px 10px;font-family:var(--font-mono);font-size:9px;letter-spacing:1px;color:var(--pink);text-transform:uppercase;margin-bottom:10px;}
+    .exp-company{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:7px;}
+    .exp-role{font-family:var(--font-serif);font-size:21px;font-weight:300;color:var(--black);line-height:1.2;margin-bottom:5px;}
+    .exp-card.featured .exp-role{color:var(--offwhite);}
+    .exp-period{font-family:var(--font-mono);font-size:11px;color:var(--gray);margin-bottom:14px;}
+    .exp-card.featured .exp-period{color:rgba(247,244,240,0.35);}
+    .exp-bullets li{font-family:var(--font-serif);font-size:14px;font-weight:300;color:rgba(12,12,12,0.65);line-height:1.5;padding-left:16px;position:relative;margin-bottom:7px;list-style:none;}
+    .exp-card.featured .exp-bullets li{color:rgba(247,244,240,0.6);}
+    .exp-bullets li::before{content:'→';position:absolute;left:0;color:var(--pink);font-size:11px;}
+
+    /* AWARDS */
+    .awards{background:var(--black);}
+    .awards .section-tag{color:var(--pink-soft);}
+    .awards .section-tag::before{background:var(--pink-soft);}
+    .awards .section-title{color:var(--offwhite);}
+    .awards .section-title em{color:var(--pink);}
+    .awards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:60px;background:rgba(255,255,255,0.08);}
+    .award-item{background:var(--black);padding:34px 26px;transition:background 0.2s;}
+    .award-item:hover{background:#161616;}
+    .award-icon{font-size:26px;margin-bottom:14px;display:block;}
+    .award-title{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--offwhite);margin-bottom:4px;}
+    .award-org{font-family:var(--font-mono);font-size:9px;color:var(--pink);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
+    .award-amount{font-family:var(--font-display);font-size:19px;font-weight:800;color:var(--pink);margin-bottom:7px;}
+    .award-desc{font-family:var(--font-serif);font-size:13px;font-weight:300;color:rgba(247,244,240,0.4);line-height:1.55;}
+
+    /* VOLUNTEERING */
+    .volunteering{background:var(--white);}
+    .vol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:60px;}
+    .vol-card{background:var(--offwhite);border:1px solid var(--border);padding:30px;position:relative;overflow:hidden;transition:transform 0.2s;}
+    .vol-card:hover{transform:translateY(-3px);}
+    .vol-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--pink);}
+    .vol-card.featured{grid-column:span 2;background:var(--black);}
+    .vol-card.featured::before{background:var(--pink);}
+    .vol-tag{display:inline-flex;background:var(--pink-dim);border:1px solid var(--pink-border);border-radius:2px;padding:3px 10px;font-family:var(--font-mono);font-size:9px;letter-spacing:1px;color:var(--pink);text-transform:uppercase;margin-bottom:10px;}
+    .vol-org{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:7px;}
+    .vol-role{font-family:var(--font-serif);font-size:21px;font-weight:300;color:var(--black);line-height:1.2;margin-bottom:5px;}
+    .vol-card.featured .vol-role{color:var(--offwhite);}
+    .vol-desc{font-family:var(--font-serif);font-size:15px;font-weight:300;color:rgba(12,12,12,0.65);line-height:1.65;}
+    .vol-card.featured .vol-desc{color:rgba(247,244,240,0.6);}
+
+    /* ROOTED */
+    .rooted-section{background:var(--offwhite);display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;min-height:580px;}
+    .rooted-left{padding:100px 80px;display:flex;flex-direction:column;justify-content:center;}
+    .rooted-right{background:var(--black);padding:100px 80px;display:flex;flex-direction:column;justify-content:center;}
+    .rooted-right .section-tag{color:var(--pink-soft);}
+    .rooted-right .section-tag::before{background:var(--pink-soft);}
+    .rooted-title{font-family:var(--font-serif);font-size:50px;font-weight:300;color:var(--offwhite);line-height:1.05;margin-bottom:14px;}
+    .rooted-title em{font-style:italic;color:var(--pink);}
+    .rooted-desc{font-family:var(--font-serif);font-size:16px;font-weight:300;color:rgba(247,244,240,0.55);line-height:1.7;margin-bottom:24px;}
+    .rooted-feat{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:13px;font-weight:500;color:rgba(247,244,240,0.7);margin-bottom:10px;}
+    .rooted-feat::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);flex-shrink:0;}
+    .app-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(232,100,122,0.15);border:1px solid var(--pink-border);border-radius:2px;padding:12px 20px;font-family:var(--font-mono);font-size:11px;letter-spacing:1px;color:var(--pink);text-decoration:none;text-transform:uppercase;transition:background 0.2s;margin-top:8px;}
+    .app-badge:hover{background:rgba(232,100,122,0.25);}
+
+    /* SKILLS */
+    .skills-section{background:var(--offwhite);}
+    .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:60px;}
+    .skill-group-title{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+    .skill-item{font-family:var(--font-serif);font-size:15px;font-weight:300;color:var(--black);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+    .skill-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--pink);flex-shrink:0;}
+
+    /* MANIFESTO */
+    .manifesto{background:var(--black);padding:120px 80px;text-align:center;}
+    .manifesto-quote{font-family:var(--font-serif);font-size:clamp(28px,4.5vw,58px);font-weight:300;font-style:italic;color:var(--offwhite);line-height:1.3;max-width:900px;margin:0 auto 32px;}
+    .manifesto-quote em{color:var(--pink);font-style:normal;}
+    .manifesto-attr{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+
+    /* CONTACT */
+    .contact{background:var(--offwhite);}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:60px;align-items:start;}
+    .contact-text{font-family:var(--font-serif);font-size:19px;font-weight:300;color:rgba(12,12,12,0.65);line-height:1.75;}
+    .contact-link{display:flex;align-items:center;gap:16px;padding:16px 22px;background:var(--white);border:1px solid var(--border);text-decoration:none;color:var(--black);transition:all 0.2s;margin-bottom:12px;}
+    .contact-link:last-child{margin-bottom:0;}
+    .contact-link:hover{border-color:var(--pink);background:var(--pink-dim);}
+    .contact-link-icon{font-size:17px;flex-shrink:0;}
+    .contact-link-label{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:2px;}
+    .contact-link-value{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--black);}
+
+    footer{background:var(--black);padding:28px 80px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);}
+    .footer-logo{font-family:var(--font-display);font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--offwhite);}
+    .footer-logo span{color:var(--pink);}
+    .footer-copy{font-family:var(--font-mono);font-size:11px;color:rgba(247,244,240,0.25);letter-spacing:1px;}
+
+    .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:1024px){
+      section{padding:80px 40px;}
+      .hero{grid-template-columns:1fr;min-height:auto;}
+      .hero-left{padding:100px 40px 60px;}
+      .hero-right{height:500px;}
+      .story-grid,.exp-grid,.contact-grid,.vol-grid{grid-template-columns:1fr;gap:40px;}
+      .exp-card.featured,.vol-card.featured{grid-column:span 1;}
+      .awards-grid{grid-template-columns:1fr 1fr;}
+      .skills-grid{grid-template-columns:1fr 1fr;}
+      .rooted-section{grid-template-columns:1fr;}
+      .rooted-left,.rooted-right{padding:80px 40px;}
+      nav{padding:16px 24px;}
+      .nav-links{display:none;}
+      footer{padding:24px 40px;flex-direction:column;gap:12px;text-align:center;}
+    }
+    @media(max-width:640px){
+      section{padding:60px 24px;}
+      .hero-left{padding:90px 24px 40px;}
+      .awards-grid{grid-template-columns:1fr;}
+      .skills-grid{grid-template-columns:1fr 1fr;}
+      .manifesto{padding:80px 24px;}
+      footer{padding:24px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="#" class="nav-logo">Paige<span>Decoded</span></a>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#volunteering">Volunteering</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#rooted">rootEd</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Pittsburgh, PA · Pitt '27 · Information Science</div>
+    <h1 class="hero-name">Paige<br /><em>Frank</em></h1>
+    <div class="hero-decoded">Paige<span>Decoded</span></div>
+    <p class="hero-manifesto">Intelligence is everywhere.<br />Opportunity isn't. Yet.</p>
+    <div class="hero-stats">
+      <div><span class="hero-stat-num">3×</span><span class="hero-stat-label">SDE Internships</span></div>
+      <div><span class="hero-stat-num">3.5</span><span class="hero-stat-label">GPA · Stamps Scholar</span></div>
+      <div><span class="hero-stat-num">8+</span><span class="hero-stat-label">Awards & Scholarships</span></div>
+    </div>
+    <div class="hero-actions">
+      <a href="#story" class="btn-primary">Read my story</a>
+      <a href="https://www.linkedin.com/in/paige-frank-a34a8b217/" target="_blank" class="btn-secondary">LinkedIn →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <img src="paige.png" alt="Paige Frank" class="hero-img" />
+      <div class="hero-img-overlay"></div>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-label">Currently building</div>
+      <div class="hero-badge-text">rootEd — for Pittsburgh students</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">2x Amazon SDE Intern</span>
+    <span class="ticker-item">CGI Software Dev Intern · Summer 2025</span>
+    <span class="ticker-item">Stamps Scholar · Full Ride</span>
+    <span class="ticker-item">NCWIT National Winner</span>
+    <span class="ticker-item">CGI App Dev Competition Winner · 2021</span>
+    <span class="ticker-item">Youth of the Year · PA 2023</span>
+    <span class="ticker-item">Amazon Future Engineer Scholar · $10k/yr</span>
+    <span class="ticker-item">Girlfriends Fund Scholar</span>
+    <span class="ticker-item">BGC Shine Bright Scholar</span>
+    <span class="ticker-item">Builder of rootEd</span>
+    <span class="ticker-item">Pitt IT Student Consultant</span>
+    <span class="ticker-item">AI Pathways Instructor</span>
+    <span class="ticker-item">SCI UBelong Peer Mentor</span>
+    <span class="ticker-item">Sarah Heinz House ROAR Event</span>
+    <span class="ticker-item">2x Amazon SDE Intern</span>
+    <span class="ticker-item">CGI Software Dev Intern · Summer 2025</span>
+    <span class="ticker-item">Stamps Scholar · Full Ride</span>
+    <span class="ticker-item">NCWIT National Winner</span>
+    <span class="ticker-item">CGI App Dev Competition Winner · 2021</span>
+    <span class="ticker-item">Youth of the Year · PA 2023</span>
+    <span class="ticker-item">Amazon Future Engineer Scholar · $10k/yr</span>
+    <span class="ticker-item">Girlfriends Fund Scholar</span>
+    <span class="ticker-item">BGC Shine Bright Scholar</span>
+    <span class="ticker-item">Builder of rootEd</span>
+    <span class="ticker-item">Pitt IT Student Consultant</span>
+    <span class="ticker-item">AI Pathways Instructor</span>
+    <span class="ticker-item">SCI UBelong Peer Mentor</span>
+    <span class="ticker-item">Sarah Heinz House ROAR Event</span>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="section-tag">My story</div>
+  <h2 class="section-title">Poured into.<br /><em>Paying it forward.</em></h2>
+  <div class="story-grid">
+    <div class="story-text fade-up">
+      <p>I grew up in Pittsburgh knowing I was smart. What I didn't always have was someone who looked like me showing me what was possible. That changed when people started <strong>really investing</strong> in me.</p>
+      <p>A Boys & Girls Club that named me <em>Youth of the Year for the entire state of Pennsylvania</em>. Scholarships from the Girlfriends Fund, BGC Shine Bright, and Amazon that saw potential before I had a portfolio. A full ride to Pitt as a Stamps Scholar.</p>
+      <p>I went back to that same Boys & Girls Club to <strong>teach AI and programming</strong> to the next generation. I taught young girls cybersecurity at the Sarah Heinz House ROAR event. I mentored incoming Pitt students through SCI UBelong before they ever stepped into their first class. I won the CGI App Dev Competition at 16. Then Amazon — twice. This summer, CGI right here in Pittsburgh.</p>
+      <p><em>The gap isn't talent</em> — it's access. It's knowing someone who can open the door. So I built <strong>rootEd</strong> — the platform I wish existed when I was figuring it all out.</p>
+    </div>
+    <div class="story-milestones fade-up">
+      <div class="milestone"><div class="milestone-year">2021</div><div><div class="milestone-title">CGI App Dev Competition — Winner</div><div class="milestone-desc">Built and pitched a tech solution at 16. Now joining their team in 2025.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2023</div><div><div class="milestone-title">Youth of the Year — PA State</div><div class="milestone-desc">Highest honor in Pennsylvania. Leadership, community, academic excellence.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2023</div><div><div class="milestone-title">AI Pathways Instructor · Boys & Girls Club</div><div class="milestone-desc">Taught AI and programming to Pittsburgh teens. Gave back immediately.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2023</div><div><div class="milestone-title">Stamps Scholar · Full Ride · Pitt</div><div class="milestone-desc">One of the most prestigious merit scholarships in the country.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2023</div><div><div class="milestone-title">Full Stack Dev Intern · Blue Street Data</div><div class="milestone-desc">Student-run startup. Real product, real users, real responsibility.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2024</div><div><div class="milestone-title">SCI UBelong Peer Mentor · Pitt</div><div class="milestone-desc">Helped incoming SCI students build belonging before Welcome Week even began.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2024</div><div><div class="milestone-title">SDE Intern · Amazon (1st Summer)</div><div class="milestone-desc">TypeScript + React + RESTful API. Shipped to production. Never looked back.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2025</div><div><div class="milestone-title">SDE Intern · Amazon (2nd Summer)</div><div class="milestone-desc">Kotlin · 92% accuracy ML model · AWS Lambda + DynamoDB.</div></div></div>
+      <div class="milestone"><div class="milestone-year">2025</div><div><div class="milestone-title">Software Dev Intern · CGI · Pittsburgh</div><div class="milestone-desc">Coming home. Full circle from winning their competition in 2021.</div></div></div>
+      <div class="milestone"><div class="milestone-year">Now</div><div><div class="milestone-title">Building rootEd + Pitt IT Consultant</div><div class="milestone-desc">The platform I needed. Free. For every Pittsburgh student.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-tag">Experience</div>
+  <h2 class="section-title">Where I've<br /><em>built things.</em></h2>
+  <div class="exp-grid">
+
+    <div class="exp-card featured fade-up">
+      <div class="exp-badge">⭐ 2× Return Offer</div>
+      <div class="exp-company">Amazon · Seattle, WA</div>
+      <div class="exp-role">Software Development Engineer Intern — Two Consecutive Summers</div>
+      <div class="exp-period">May 2024 – Aug 2024 · May 2025 – Aug 2025</div>
+      <ul class="exp-bullets">
+        <li>Engineered backend attribute-comparison in Kotlin — 92% accuracy using AWS Lambda and DynamoDB across Amazon detail-page attributes</li>
+        <li>Built the frontend "Audit" tab and CSV-upload page, streamlining data ingestion for the Virtual MultiPack Program</li>
+        <li>Developed offer-search page in TypeScript, Java and React, enhancing vendor manager efficiency</li>
+        <li>Engineered and deployed a RESTful API in Java, standardizing integrations across workflows</li>
+        <li>Authored design documents detailing system architecture and scalability — adopted by the team</li>
+      </ul>
+    </div>
+
+    <div class="exp-card fade-up">
+      <div class="exp-badge">🚀 Incoming · Summer 2025</div>
+      <div class="exp-company">CGI · Pittsburgh, PA</div>
+      <div class="exp-role">Software Developer Intern</div>
+      <div class="exp-period">Summer 2025</div>
+      <ul class="exp-bullets">
+        <li>Full circle — won their App Dev Competition in 2021, now joining their Pittsburgh team</li>
+        <li>Enterprise software at a global IT and business consulting firm</li>
+        <li>Bringing home the engineering discipline built at Amazon to Pittsburgh's tech scene</li>
+      </ul>
+    </div>
+
+    <div class="exp-card fade-up">
+      <div class="exp-company">Blue Street Data · Pittsburgh, PA</div>
+      <div class="exp-role">Full Stack Developer Intern</div>
+      <div class="exp-period">July 2023 – May 2025 · Student-run startup · 1486 Labs</div>
+      <ul class="exp-bullets">
+        <li>Built and maintained a digital platform for data professionals on Google Cloud Platform</li>
+        <li>Administered authentication and access control using Keycloak</li>
+        <li>Enhanced search engine functionality and debugged platform modules for reliability</li>
+      </ul>
+    </div>
+
+    <div class="exp-card fade-up">
+      <div class="exp-company">Boys & Girls Club of Western PA</div>
+      <div class="exp-role">AI Pathways Instructor</div>
+      <div class="exp-period">2023 – Present</div>
+      <ul class="exp-bullets">
+        <li>Developed and taught AI and programming curriculum for Pittsburgh teens</li>
+        <li>Led workshops on problem-solving and curiosity in technology</li>
+        <li>Guided students in applying technology to solve real-world problems</li>
+      </ul>
+    </div>
+
+    <div class="exp-card fade-up">
+      <div class="exp-company">University of Pittsburgh · IT</div>
+      <div class="exp-role">Student IT Consultant</div>
+      <div class="exp-period">Current</div>
+      <ul class="exp-bullets">
+        <li>Technical support and consulting to students, faculty, and staff across the university</li>
+        <li>Troubleshoot hardware, software, and network issues in a fast-paced environment</li>
+        <li>Bridge between technical solutions and everyday users — the same mission as rootEd</li>
+      </ul>
+    </div>
+
+    <div class="exp-card fade-up">
+      <div class="exp-company">University of Pittsburgh · SCI</div>
+      <div class="exp-role">Peer Advisor & SCI UBelong Peer Mentor</div>
+      <div class="exp-period">Aug 2024 – Dec 2024</div>
+      <ul class="exp-bullets">
+        <li>Served as a SCI UBelong Peer Mentor — welcoming incoming first-year students before Welcome Week, building community and belonging from day one at Pitt</li>
+        <li>Helped students move onto campus early, explore Pittsburgh, and connect with SCI faculty and staff, increasing student retention and confidence</li>
+        <li>Advised students on academic planning, internships, and career development as a Peer Advisor</li>
+        <li>Directly inspired rootEd's mentorship feature — proof that early connection changes everything</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- VOLUNTEERING -->
+<section class="volunteering" id="volunteering">
+  <div class="section-tag">Giving back</div>
+  <h2 class="section-title">Community is<br /><em>everything.</em></h2>
+
+  <div class="vol-grid">
+
+    <div class="vol-card featured fade-up">
+      <div class="vol-tag">🌟 Featured</div>
+      <div class="vol-org">Sarah Heinz House · North Side, Pittsburgh</div>
+      <div class="vol-role">ROAR Event — Cybersecurity Instructor</div>
+      <p class="vol-desc" style="margin-top:10px;">At the Reimagining Opportunities to Achieve and Rise (ROAR) event, young girls from Pittsburgh were given the chance to see firsthand what a career in STEM could look like. I taught cybersecurity basics — showing them that the tech world has a place for them, that their curiosity is a superpower, and that someone who looks like them is already building the future. That's the work. That's why rootEd exists.</p>
+    </div>
+
+    <div class="vol-card fade-up">
+      <div class="vol-org">SCI UBelong · University of Pittsburgh</div>
+      <div class="vol-role">Peer Mentor</div>
+      <p class="vol-desc" style="margin-top:10px;">Welcomed incoming first-year SCI students before classes even started. Helped them build friendships, explore Pittsburgh, and find confidence in a new environment. Because belonging starts before the first class — and I know firsthand how much that matters.</p>
+    </div>
+
+    <div class="vol-card fade-up">
+      <div class="vol-org">Girls Who Code · Pitt Chapter</div>
+      <div class="vol-role">Mentor</div>
+      <p class="vol-desc" style="margin-top:10px;">Mentoring the next generation of women coders at Pitt. Sharing the technical skills, career knowledge, and personal playbook I've built — so they don't have to figure it out alone like I did.</p>
+    </div>
+
+    <div class="vol-card fade-up">
+      <div class="vol-org">NCWIT</div>
+      <div class="vol-role">High School Application Reviewer</div>
+      <p class="vol-desc" style="margin-top:10px;">Reviewing applications for the same NCWIT Aspirations in Computing award I won. Reading the stories of young women who remind me of myself — and making sure the right voices get recognized.</p>
+    </div>
+
+    <div class="vol-card fade-up">
+      <div class="vol-org">Antioch Baptist Church</div>
+      <div class="vol-role">Volunteer · Bethlehem Haven Women's Shelter</div>
+      <p class="vol-desc" style="margin-top:10px;">Serving women at the Bethlehem Haven Women's Shelter in Pittsburgh through Antioch Baptist Church. Community service that grounds me — a reminder that technology is a tool, but people are the mission.</p>
+    </div>
+
+    <div class="vol-card fade-up">
+      <div class="vol-org">Pitt CS Club · Bit/Byte Program</div>
+      <div class="vol-role">Mentor</div>
+      <p class="vol-desc" style="margin-top:10px;">Mentoring first and second year CS students navigating their technical journey at Pitt. Sharing interview tips, internship paths, and everything I learned the hard way — so they can learn it the easy way.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="awards" id="awards">
+  <div class="section-tag">Recognition</div>
+  <h2 class="section-title">Awards &amp;<br /><em>scholarships.</em></h2>
+  <div class="awards-grid">
+    <div class="award-item fade-up">
+      <span class="award-icon">🏆</span>
+      <div class="award-title">Stamps Scholar</div>
+      <div class="award-org">University of Pittsburgh</div>
+      <div class="award-desc">Full-ride merit scholarship. One of the most prestigious undergraduate awards in the country, recognizing exceptional achievement and leadership potential.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">💛</span>
+      <div class="award-title">Amazon Future Engineer Scholar</div>
+      <div class="award-org">Amazon</div>
+      <div class="award-amount">$10,000 / year</div>
+      <div class="award-desc">Recognizing the next generation of CS innovators from underrepresented communities. Renewed annually.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">💕</span>
+      <div class="award-title">Girlfriends Fund Scholarship</div>
+      <div class="award-org">The Girlfriends Fund</div>
+      <div class="award-desc">Supporting young women of color pursuing STEM fields and creating pathways to leadership in technology.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">✨</span>
+      <div class="award-title">Shine Bright Scholarship</div>
+      <div class="award-org">Boys &amp; Girls Club</div>
+      <div class="award-desc">Awarded to outstanding BGC alumni who demonstrate academic excellence and commitment to community service.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">⭐</span>
+      <div class="award-title">NCWIT Aspirations in Computing</div>
+      <div class="award-org">National Winner</div>
+      <div class="award-desc">National recognition for young women with outstanding aptitude and interest in computing and technology.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">🌟</span>
+      <div class="award-title">Youth of the Year · PA State</div>
+      <div class="award-org">Boys &amp; Girls Club · 2023</div>
+      <div class="award-desc">Highest honor given to a club member in Pennsylvania — leadership, academic excellence, and community impact.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">💡</span>
+      <div class="award-title">CGI App Development — Winner</div>
+      <div class="award-org">CGI · 2021</div>
+      <div class="award-desc">Built and pitched a real tech solution at 16. First major win. Now interning at CGI in Pittsburgh in 2025.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">🎓</span>
+      <div class="award-title">Dean's List · 3.5 GPA</div>
+      <div class="award-org">University of Pittsburgh</div>
+      <div class="award-desc">Maintained while interning at Amazon, teaching at BGC, consulting at Pitt IT, volunteering, and building rootEd.</div>
+    </div>
+    <div class="award-item fade-up">
+      <span class="award-icon">🔬</span>
+      <div class="award-title">Amazon Future Engineer + NCWIT</div>
+      <div class="award-org">Community Recognition</div>
+      <div class="award-desc">Recognized nationally for technical excellence, leadership, and dedication to expanding access in computing.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ROOTED SECTION -->
+<div class="rooted-section" id="rooted">
+  <div class="rooted-left">
+    <div class="section-tag">Flagship project</div>
+    <h2 class="section-title">I didn't just talk<br />about the problem.<br /><em>I built the solution.</em></h2>
+    <p style="font-family:var(--font-serif);font-size:18px;font-weight:300;color:rgba(12,12,12,0.65);line-height:1.7;margin-top:16px;">rootEd is a TikTok-style career platform built specifically for Pittsburgh students — high school and college. Swipeable mentor reels, real internships, local scholarships, and a Roast My Resume feature where real Pittsburgh mentors give honest video feedback.</p>
+    <p style="font-family:var(--font-serif);font-size:18px;font-weight:300;color:rgba(12,12,12,0.65);line-height:1.7;margin-top:14px;">Built with React, Supabase, and deployed on GitHub Pages. Free. Always.</p>
+    <a href="https://paigefrank.github.io/RootEd/" target="_blank" class="btn-primary" style="margin-top:28px;display:inline-block;">Launch rootEd →</a>
+  </div>
+  <div class="rooted-right">
+    <div class="section-tag">rootEd</div>
+    <div class="rooted-title">Built for the<br />student who was<br /><em>me</em>.</div>
+    <p class="rooted-desc">The platform I wish existed when I was figuring it out. Real mentors who went to Pitt and CMU. Real Pittsburgh companies hiring. Real scholarships with real deadlines.</p>
+    <div class="rooted-feat">TikTok-style swipeable career feed</div>
+    <div class="rooted-feat">🔥 Roast My Resume — video feedback in 24hrs</div>
+    <div class="rooted-feat">Root Map — opportunities by PGH neighborhood</div>
+    <div class="rooted-feat">Scholarships for HS & college students</div>
+    <div class="rooted-feat">Real sign-up with Supabase auth</div>
+    <a href="https://paigefrank.github.io/RootEd/" target="_blank" class="app-badge">→ Launch rootEd live</a>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="section-tag">Technical skills</div>
+  <h2 class="section-title">What I<br /><em>build with.</em></h2>
+  <div class="skills-grid">
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-item">Python</div>
+      <div class="skill-item">Java</div>
+      <div class="skill-item">JavaScript</div>
+      <div class="skill-item">TypeScript</div>
+      <div class="skill-item">Kotlin</div>
+      <div class="skill-item">SQL</div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">Frameworks</div>
+      <div class="skill-item">React</div>
+      <div class="skill-item">Next.js</div>
+      <div class="skill-item">React Native</div>
+      <div class="skill-item">Pandas / NumPy</div>
+      <div class="skill-item">RESTful APIs</div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">Cloud & Tools</div>
+      <div class="skill-item">AWS Lambda</div>
+      <div class="skill-item">DynamoDB / S3</div>
+      <div class="skill-item">AWS SQS / Step Fn</div>
+      <div class="skill-item">Google Cloud</div>
+      <div class="skill-item">Docker · Git</div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">Currently building</div>
+      <div class="skill-item">Supabase</div>
+      <div class="skill-item">Machine Learning</div>
+      <div class="skill-item">System Design</div>
+      <div class="skill-item">Product Strategy</div>
+      <div class="skill-item">rootEd</div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <p class="manifesto-quote">"The door was opened for me.<br />Now I'm holding it <em>wide open</em><br />for everyone behind me."</p>
+  <div class="manifesto-attr">— Paige Frank · PaigeDecoded</div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-tag">Get in touch</div>
+  <h2 class="section-title">Let's<br /><em>connect.</em></h2>
+  <div class="contact-grid">
+    <div class="contact-text fade-up">
+      Whether you're a Pittsburgh student looking for guidance, a company interested in partnering with rootEd, or someone who just wants to talk tech and ambition — my inbox is open.<br /><br />
+      I believe in paying it forward. If someone poured into you, pour into someone else.
+    </div>
+    <div class="fade-up">
+      <a href="mailto:paigefrank023@gmail.com" class="contact-link">
+        <span class="contact-link-icon">✉</span>
+        <div><span class="contact-link-label">Email</span><span class="contact-link-value">paigefrank023@gmail.com</span></div>
+      </a>
+      <a href="https://www.linkedin.com/in/paige-frank-a34a8b217/" target="_blank" class="contact-link">
+        <span class="contact-link-icon">in</span>
+        <div><span class="contact-link-label">LinkedIn</span><span class="contact-link-value">linkedin.com/in/paige-frank-a34a8b217</span></div>
+      </a>
+      <a href="https://github.com/PaigeFrank" target="_blank" class="contact-link">
+        <span class="contact-link-icon">{ }</span>
+        <div><span class="contact-link-label">GitHub</span><span class="contact-link-value">github.com/PaigeFrank</span></div>
+      </a>
+      <a href="https://paigefrank.github.io/RootEd/" target="_blank" class="contact-link">
+        <span class="contact-link-icon">🌱</span>
+        <div><span class="contact-link-label">Flagship Project</span><span class="contact-link-value">rootEd — Pittsburgh Student Careers</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Paige<span>Decoded</span></div>
+  <div class="footer-copy">© 2025 Paige Frank · Pittsburgh, PA · Built with intention</div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 5 + 'px';
+    cursor.style.top = e.clientY - 5 + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width='10px'; cursor.style.height='10px'; });
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
